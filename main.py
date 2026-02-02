@@ -6,7 +6,9 @@ import threading
 import os
 
 TOKEN = os.getenv("BOT_TOKEN")
-RULES_CHANNEL_ID = 1455045749439070262  # Channel to send initial "Show Rules" button
+RULES_CHANNEL_ID = 1455045749439070262  # Your rules channel
+
+BANNER_URL = "https://i.ibb.co/Dg7G4V7s.png"  # Optional banner for embeds
 
 intents = discord.Intents.default()
 intents.members = True
@@ -29,89 +31,137 @@ def keep_alive():
     threading.Thread(target=run_web).start()
 # ------------------------------------------------------------
 
-# ------------------ Full Rules Pages ------------------
-RULES_PAGES = [
-    # Page 1
-    "## ✦✦✦ 📜 LOS CHAMPS — OFFICIAL RULEBOOK 📜 ✦✦✦ ##\n\n"
-    "*Respect the league. Respect the game. Respect each other.*\n\n"
-    "**✦✦✦ 🌐 GENERAL CONDUCT 🌐 ✦✦✦**\n\n"
-    "✧ All members must follow Discord Terms of Service at all times.\n"
-    "✧ Treat everyone with basic respect — players, staff, and spectators.\n"
-    "✧ Competitive banter is allowed; harassment, hate speech, threats, or slurs are NOT.\n"
-    "✧ No spamming, excessive tagging, or disruptive behavior.\n\n"
-    "If it wouldn’t be acceptable in professional esports setting, it’s not acceptable here.\n"
-    "✨ If it wouldn’t be acceptable in professional esports setting, it’s not acceptable here.",
-    
-    # Page 2
-    "**✦✦✦ 🎮 COMPETITIVE INTEGRITY 🎮✦✦✦**\n\n"
-    "✦ No smurfing, boosting, or DDoS\n"
-    "✦ Play only on your main account.\n"
-    "✦ No match fixing, throwing, or collusion.\n"
-    "✦ Play to win — always.\n\n"
-    "🏆 __Los Champs is built on fair competition. Integrity is non-negotiable.__\n\n"
-    "**✦✦✦ 🧑‍✈️ TEAMS & PLAYERS 🧑‍✈️ ✦✦✦**\n\n"
-    "✧ Teams must have 3 registered players (1 optional substitute).\n"
-    "✧ Teams are self-managed — staff does not place players.\n"
-    "✧ Captains are responsible for:\n"
-    "  • Team communication\n"
-    "  • Match readiness\n"
-    "  • Scheduling cooperation\n"
-    "✨ Be reliable. Be prepared. Be professional.",
-    
-    # Page 3
-    "**✦✦✦ 📅 MATCH DAY EXPECTATIONS 📅 ✦✦✦**\n\n"
-    "✦ Be on time for scheduled matches.\n"
-    "✦ Check in early and communicate delays immediately.\n"
-    "✦ Series formats must be followed (Bo5 / Bo7 where applicable).\n"
-    "✦ Results must be reported accurately.\n"
-    "⏱️ Repeated lateness or no-shows may result in penalties.\n\n"
-    "**✦✦✦ 🏆 MAJORS & EVENTS 🏆 ✦✦✦**\n\n"
-    "✧ Majors are optional but highly encouraged.\n"
-    "✧ Teams must follow posted brackets and schedules.\n"
-    "✧ Unsportsmanlike behavior during Majors may result in removal.\n"
-    "✨ Majors are where legacies are made — act accordingly.",
-    
-    # Page 4
-    "**✦✦✦ 🔔 COMMUNICATION & PINGS 🔔 ✦✦✦**\n\n"
-    "✦ Use channels for their intended purpose.\n"
-    "✦ Only ping roles when appropriate.\n"
-    "✦ Do not abuse @mentions.\n"
-    "📣 Keep the server clean and readable.\n\n"
-    "**✦✦✦ ⚖️ STAFF & ENFORCEMENT ⚖️ ✦✦✦**\n\n"
-    "✧ Staff decisions are final.\n"
-    "✧ Arguing in public channels will not change rulings.\n"
-    "✧ Appeals may be submitted calmly and respectfully via staff channels or DMs.\n"
-    "🛡️ Staff exist to protect the league — not to argue.\n\n"
-    "**✦✦✦ 🚨 CONSEQUENCES 🚨 ✦✦✦**\n\n"
-    "Violations may result in:\n"
-    "✦ Warnings\n✦ Match penalties\n✦ Suspensions\n✦ Removal from the league or server\n"
-    "Severity depends on the situation.",
-    
-    # Page 5
-    "**✦✦✦ 👑 FINAL NOTE 👑 ✦✦✦**\n\n"
-    "✨ Los Champs is a competitive league, not a public ranked lobby.\n"
-    "✨ Respect the structure, the players, and the grind.\n"
-    "✨ Play hard. Compete fair. Leave your mark.\n\n"
-    "**✦✦✦ 💬 IN-GAME CHAT CONDUCT 💬 ✦✦✦**\n\n"
-    "✧ Using quick chats like **“What a save!”**, **“Nice one!”**, **“Okay.”**, etc. in a toxic, sarcastic, or disrespectful way is not allowed.\n"
-    "✧ Spamming chat to tilt, mock, or provoke opponents or teammates is considered unsportsmanlike behavior.\n"
-    "✧ This league is competitive — mental games through toxicity are not skill.\n"
-    "🎮 In-game chat should be used for communication, not disrespect.\n\n"
-    "**✦✦✦ ⚠️ STRIKE SYSTEM ⚠️ ✦✦✦**\n\n"
-    "Violating chat conduct rules results in **STRIKES**:\n"
-    "✦ **1st Strike** — Official warning\n"
-    "✦ **2nd Strike** — **Immediate removal from your team**\n"
-    "✦ **2 Strikes Total** = **BANNED** from all league matches, RLCS games, and scrims\n"
-    "There are **NO third chances**.\n\n"
-    "**✦✦✦ 🧠 SPORTSMANSHIP RULE 🧠 ✦✦✦**\n"
-    "✨ Competitive doesn’t mean toxic\n"
-    "✨ Respect opponents and teammates\n"
-    "✨ Let your gameplay talk — not your chat wheel\n\n"
-    "**✦✦✦ 🚫 FINAL WARNING 🚫 ✦✦✦**\n"
-    "Staff review replays and reports.\n"
-    "If intent to be toxic is clear, the strike is applied — no debates in public channels.\n\n"
-    "||<@&1455054564683153580>||"
-]
+# ------------------ Rules Embeds ------------------
+RULES_EMBEDS = []
+
+# Page 1: General Conduct
+embed1 = discord.Embed(
+    title="📜 LOS CHAMPS — OFFICIAL RULEBOOK 📜",
+    description="*Respect the league. Respect the game. Respect each other.*",
+    color=discord.Color.purple()
+)
+embed1.add_field(
+    name="🌐 GENERAL CONDUCT",
+    value="✧ Follow Discord ToS at all times.\n"
+          "✧ Treat everyone with basic respect.\n"
+          "✧ No harassment, hate speech, threats, or slurs.\n"
+          "✧ No spamming or disruptive behavior.\n"
+          "If it wouldn’t be acceptable in professional esports, it’s not acceptable here.",
+    inline=False
+)
+embed1.set_image(url=BANNER_URL)
+RULES_EMBEDS.append(embed1)
+
+# Page 2: Competitive Integrity & Teams
+embed2 = discord.Embed(
+    title="🎮 COMPETITIVE INTEGRITY",
+    color=discord.Color.gold()
+)
+embed2.add_field(
+    name="Rules",
+    value="✦ No smurfing, boosting, or DDoS\n"
+          "✦ Play only on your main account\n"
+          "✦ No match fixing, throwing, or collusion\n"
+          "✦ Play to win — always",
+    inline=False
+)
+embed2.add_field(
+    name="🧑‍✈️ TEAMS & PLAYERS",
+    value="✧ Teams must have 3 registered players (+1 optional sub)\n"
+          "✧ Teams are self-managed\n"
+          "✧ Captains are responsible for:\n"
+          "  • Communication\n"
+          "  • Match readiness\n"
+          "  • Scheduling cooperation\n"
+          "✨ Be reliable and professional",
+    inline=False
+)
+embed2.set_image(url=BANNER_URL)
+RULES_EMBEDS.append(embed2)
+
+# Page 3: Match Day & Majors
+embed3 = discord.Embed(
+    title="📅 MATCH DAY EXPECTATIONS & 🏆 MAJORS",
+    color=discord.Color.blurple()
+)
+embed3.add_field(
+    name="Match Day",
+    value="✦ Be on time for scheduled matches\n"
+          "✦ Check in early and communicate delays\n"
+          "✦ Follow series formats (Bo5 / Bo7)\n"
+          "✦ Report results accurately\n"
+          "⏱️ Repeated lateness/no-shows may result in penalties",
+    inline=False
+)
+embed3.add_field(
+    name="Majors & Events",
+    value="✧ Majors are optional but encouraged\n"
+          "✧ Follow posted brackets & schedules\n"
+          "✧ Unsportsmanlike behavior may result in removal\n"
+          "✨ Majors are where legacies are made — act accordingly",
+    inline=False
+)
+embed3.set_image(url=BANNER_URL)
+RULES_EMBEDS.append(embed3)
+
+# Page 4: Communication & Staff
+embed4 = discord.Embed(
+    title="🔔 COMMUNICATION & ⚖️ STAFF",
+    color=discord.Color.teal()
+)
+embed4.add_field(
+    name="Communication & Pings",
+    value="✦ Use channels appropriately\n"
+          "✦ Only ping roles when necessary\n"
+          "✦ Keep server readable",
+    inline=False
+)
+embed4.add_field(
+    name="Staff & Enforcement",
+    value="✧ Staff decisions are final\n"
+          "✧ Arguing in public won't change rulings\n"
+          "✧ Appeals via staff channels or DMs\n"
+          "🛡️ Staff exist to protect the league — not to argue",
+    inline=False
+)
+embed4.add_field(
+    name="Consequences",
+    value="Violations may result in warnings, penalties, suspensions, or removal",
+    inline=False
+)
+embed4.set_image(url=BANNER_URL)
+RULES_EMBEDS.append(embed4)
+
+# Page 5: Chat, Strikes, Sportsmanship
+embed5 = discord.Embed(
+    title="💬 IN-GAME CHAT & ⚠️ STRIKE SYSTEM",
+    color=discord.Color.red()
+)
+embed5.add_field(
+    name="Chat Conduct",
+    value="✧ No toxic, sarcastic, or disrespectful quick chats\n"
+          "✧ No spamming to tilt or provoke opponents\n"
+          "🎮 Chat is for communication, not disrespect",
+    inline=False
+)
+embed5.add_field(
+    name="Strike System",
+    value="✦ 1st Strike — Official warning\n"
+          "✦ 2nd Strike — Immediate removal from team\n"
+          "✦ 2 Strikes Total = BANNED from all matches\n"
+          "NO third chances",
+    inline=False
+)
+embed5.add_field(
+    name="Sportsmanship & Final Warning",
+    value="✨ Respect opponents & teammates\n"
+          "✨ Let gameplay speak, not chat wheel\n"
+          "Staff review reports and apply strikes if intent to be toxic is clear\n"
+          "||<@&1455054564683153580>||",
+    inline=False
+)
+embed5.set_image(url=BANNER_URL)
+RULES_EMBEDS.append(embed5)
 
 # ------------------ Views ------------------
 class RulesView(View):
@@ -127,13 +177,13 @@ class RulesView(View):
     async def previous(self, interaction: discord.Interaction, button: discord.ui.Button):
         if self.current_page > 0:
             self.current_page -= 1
-            await interaction.response.edit_message(content=RULES_PAGES[self.current_page], view=self)
+            await interaction.response.edit_message(embed=RULES_EMBEDS[self.current_page], view=self)
 
     @discord.ui.button(label="Next", style=discord.ButtonStyle.blurple)
     async def next(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if self.current_page < len(RULES_PAGES)-1:
+        if self.current_page < len(RULES_EMBEDS)-1:
             self.current_page += 1
-            await interaction.response.edit_message(content=RULES_PAGES[self.current_page], view=self)
+            await interaction.response.edit_message(embed=RULES_EMBEDS[self.current_page], view=self)
 
 class ShowRulesView(View):
     def __init__(self):
@@ -142,7 +192,7 @@ class ShowRulesView(View):
     @discord.ui.button(label="Show Rules", style=discord.ButtonStyle.green)
     async def show_rules(self, interaction: discord.Interaction, button: discord.ui.Button):
         view = RulesView(interaction.user.id)
-        await interaction.response.send_message(content=RULES_PAGES[0], view=view, ephemeral=True)
+        await interaction.response.send_message(embed=RULES_EMBEDS[0], view=view, ephemeral=True)
 
 # ------------------ Send initial button ------------------
 @bot.event
